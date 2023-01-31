@@ -84,7 +84,7 @@ public class AccountRestController {
 		return null;
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/updateInfo/{id}")
 	public boolean updateInfo(
 			@PathVariable
 			int id,
@@ -111,7 +111,7 @@ public class AccountRestController {
 		return false;
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/updatePsw/{id}")
 	public boolean updatePsw(
 			@PathVariable
 			int id,
