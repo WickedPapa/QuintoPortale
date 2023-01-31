@@ -136,7 +136,7 @@ public class AccountRestController {
 	}
 	
 	@PostMapping("/login")
-	public boolean tryToLog(
+	public int tryToLog(
 			@RequestBody
 			Login dto) {
 		String username = dto.getUsername();
@@ -144,10 +144,10 @@ public class AccountRestController {
 		Optional<Account> opt = accRepo.findByUsername(username);
 		if(opt.isPresent()) {
 			if(opt.get().getEncryptedPassword().equals(psw)) {
-				return true;
+				return opt.get().getId();
 			}
 		}
-		return false;
+		return -1;
 	}	
 	
 	private String encryptPassword(String password) {
