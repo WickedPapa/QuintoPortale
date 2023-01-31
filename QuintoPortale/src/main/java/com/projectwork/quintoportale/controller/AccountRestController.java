@@ -18,6 +18,7 @@ import com.projectwork.quintoportale.model.AccountRepository;
 import com.projectwork.quintoportale.view.AccountDTO;
 import com.projectwork.quintoportale.view.Login;
 import com.projectwork.quintoportale.view.UpdateAccountDTO;
+import com.projectwork.quintoportale.view.UpdatePasswordDTO;
 
 @RestController
 @RequestMapping("/accounts")
@@ -84,7 +85,7 @@ public class AccountRestController {
 	}
 	
 	@PutMapping("/{id}")
-	public boolean updateOne(
+	public boolean updateInfo(
 			@PathVariable
 			int id,
 			@RequestBody
@@ -110,11 +111,28 @@ public class AccountRestController {
 		return false;
 	}
 	
+	@PutMapping("/{id}")
+	public boolean updatePsw(
+			@PathVariable
+			int id,
+			@RequestBody
+			UpdatePasswordDTO dto) {
+		Optional<Account> opt = accRepo.findById(id);
+		if(opt.isPresent()) {
+			Account account = opt.get();
+			if(account.getEncryptedPassword().equals(dto.getOldPassword())) {
+				account.setEncryptedPassword(encryptPassword(dto.getNewPassword()));
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@DeleteMapping("/{id}")
 	public void deleteOne(
 			@PathVariable
 			int id) {
-		
+		accRepo.deleteById(id);
 	}
 	
 	@PostMapping("/login")
