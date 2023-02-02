@@ -120,8 +120,9 @@ public class AccountRestController {
 		Optional<Account> opt = accRepo.findById(id);
 		if(opt.isPresent()) {
 			Account account = opt.get();
-			if(account.getEncryptedPassword().equals(dto.getOldPassword())) {
+			if(account.getEncryptedPassword().equals(encryptPassword(dto.getOldPassword()))) {
 				account.setEncryptedPassword(encryptPassword(dto.getNewPassword()));
+				accRepo.save(account);
 				return true;
 			}
 		}
